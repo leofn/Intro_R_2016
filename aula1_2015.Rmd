@@ -1,0 +1,1075 @@
+---
+title: "Aula 1 - Bem vindo ao R"
+author: Ricardo Ceneviva
+date: 06 de Julho de 2015
+output: 
+  beamer_presentation: 
+   highlight: tango
+---
+
+## Configuração e material do curso
+
+Todos devem estar com o R e o RStudio instalados em seus computadores. Caso não esteja...
+
+- Abra um web browser, acesse <http://cran.r-project.org>, baixe e instale (Windows e Mac).
+- No Linux, o R deve acompanhar a distribuição e pode ser acessado diretamente do Terminal.
+- Também vamos utilizar o RStudio (download from <http://rstudio.com>)
+- Acompanhe os slides em <http://rpubs.com/rceneviva/aula1>
+- Códigos e dados serão enviados pela lista de emails.
+
+# O que é R?
+
+## R é uma linguagem de programação desenhada para computação estatística e gráficos. Suas principais características incluem:
+
+- Vasta capacidade, com amplo leque de técnicas estatísticas e gráficas.
+- Muito [popular](http://r4stats.com/articles/popularity/) na academia internacional, com crescente popularidade nos negócios.
+- Escrita principalmente por estatísticos.
+- Grátis (sem custo, código aberto).
+- Excelente comunidade de suporte (mailing lists, blogs, tutoriais).
+- Relativamente fácil de expandir escrevendo novas funções.
+
+
+## Para quem está chegando
+
+Vindo do…
+
+-   matlab: <http://www.math.umaine.edu/~hiebeler/comp/matlabR.pdf>
+-   SciPy: <http://mathesaurus.sourceforge.net/matlab-python-xref.pdf>
+-   SAS/SPSS: <http://www.et.bs.ehu.es/~etptupaf/pub/R/RforSAS&SPSSusers.pdf>
+-   Stata: <http://www.dss.princeton.edu/training/RStata.pdf>
+
+
+## Diferenças importantes (para quem vem do SPSS/Excel, por exemplo)
+
+- Por ser uma linguagem de programação, o R é um "software" voltado para objetos. Você não fica restrito à planilhas ou banco de dados usuais.
+- Desapegue: salvo se vc contar com alguns pacotes específicos (Rcmd, por exemplo), esqueça "menus" e "botõezinhos". 
+- Vamos trabalhar com comandos e scripts. No início parece mais difícil, mas é só pegar o jeito que fica muito mais flexível e rápido.
+- Vantagem "científica": tornar a pesquisa e análise reproduzíveis.
+
+
+## Interfaces gráficas do usuário (GUI) 
+
+- Old-school way (no Linux) é rodar diretamente do terminal
+- Em Windows, há o programa padrão do R (já serve, mas é um "tapa" para se atrapalhar)
+- Aqui, vamos trabalhar com o RStudio
+- Existem outras GUI (Emacs com ESS, Vim com Vim-R-plugins, Tinn-R, etc)
+
+
+## Componentes de uma GUI do R
+
+O console.
+
+- Mostra o histórico de comandos e resultados.
+- Comandos podem ser digitados diretamente no console.
+- O trabalho feito no console desaparece quando a sessão é fechada.
+
+## Componentes de uma GUI do R
+
+Um editor de texto.
+
+- Um editor de texto limpo para escrever código de R (e salvá-lo como um script).
+- Bons editores têm ferramentas que cuidam da sintaxe (realce, preeenchimento automático, controle de parênteses), diminuindo erros.
+- Tudo que modificar seus dados deve ser feito no editor.
+
+
+## Componentes de uma GUI do R
+
+Gráficos (plots e viewer).
+
+- Ver, redimensionar e salvar gráficos.
+- Uma boa GUI permite você navegar no histórico de gráficos.
+
+Visualizador de área de trabalho.
+
+- Algumas GUIs têm um navegador de área de trabalho que permite visualizar objetos que estão abertos.
+- Muito útil para não ficar perdido num trabalho mais longo ou para lembrar os nomes dos objetos, dados, variáveis, etc.
+
+## Preâmbulo: Script e Console
+
+O R funciona ... 
+
+- 1. digitando código no console.
+- 2. OU digitando em um script (no editor de texto da GUI) e mandando as linhas de código para o console.
+
+- Salvo se estiver fazendo operações bem simples, é melhor sempre salvar seu código em um script (arquivo .R).
+
+
+## Preâmbulo: Script e Console
+
+Vamos começar?
+
+Abra um novo arquivo no seu editor e salve como "lab1.R".
+
+Escreva os comandos e execute, tipo...
+```{r}
+3+3 # usando o R como uma calculadora
+```
+
+## Preâmbulo: Script e Console
+
+- Linhas que começam com # não rodam (comentários).
+- Uma boa prática é comentar tudo que estiver no código.
+- Um usário do R deve conseguir ler seu código e saber minimamente o que você está fazendo.
+
+
+## R como calculadora
+
+```{r}
+2+2
+```
+Ou seja, o indice do valor aparece entre chaves e o resultado logo após.
+
+```{r}
+6*12
+2^8 
+```
+^ significa elevado à potência.
+
+## R como calculadora
+
+```{r}
+86/4
+```
+um dos números estranhos que o R tem é o pi:
+
+```{r}
+pi
+```
+E daí,
+```{r}
+sin(pi)
+```
+Ou seja, seno de pi: igual a zero...
+
+## R como calculadora
+
+
+Seno de pi deu algo estranho certo? Esse numero é difícil de ler...
+Para isso usamos o comando round:
+```{r}
+round(sin(pi), digits=4)
+```
+Quatro dígitos de precisão... zero!
+
+Logaritmo:
+```{r}
+log(100, base=10)
+```
+## R como calculadora
+
+E quando a base não é especificada, ele aplica logaritimo natural...
+```{r}
+log(100)
+```
+
+A base é igual a:
+```{r}
+exp(2) # equivalent to 2.71828^2 or e squared
+sqrt(64) # função para raiz quadrada
+sqrt(-2) # como esperado, nada de raiz de -2
+```
+## R como calculadora
+
+- Note que o R, em geral, não faz festinha quando ele processa um comando...
+```{r}
+2 * (6 + 2)^2 # R preserva a order das operações
+2 * (8)^2  # equivalente à expressão acima
+2 * 64
+
+2/9^2 # outro exemplo sobre ordem das operações
+2/9^2 == 2/81 # enunciado verdadeiro
+2/9^2 == (2/9) ^2 # enunciado falso, pois está exponenciando antes de dividir
+```
+- São várias as funções matemáticas e elas podem ser aplicadas também a vetores... algo que veremos adiante.
+
+## Buscando ajuda
+
+Digamos que queremos saber a média de um conjunto de valores...
+Como podemos fazer?
+
+Digamos que os valores são (86, 14, 9). Poderíamos usar o R como calculadora, certo?
+```{r}
+(86 + 14 + 9) / 3
+```
+
+Mas se tivéssemos 100 ou 1 milhão de valores?
+Talvez exista uma função no R para a média. Vejamos...
+
+## Ajuda no R
+
+- Coloque dois pontos de interrogação na frente de uma palavra para buscar nos arquivos de ajuda do R.
+```{r}
+??mean
+# se você já sabe o nome da função, um ponto de interrogação serve
+?mean
+
+# ou, no RStudio, tem uma aba "Help" que pode ser usada diretamente
+```
+
+## Ajuda no R
+
+- O help é o comando mais importante do R. Nele podemos encontrar descrições de funções que esquecemos para que servem, funções que nunca ouvimos falar, ou mesmo aquelas funções que sabemos usar mas estamos em dúvida sobre como alimenta-las, quais os tipos de dados a inserir e etc.
+
+- Outro exemplo: comando 'hist', que serve para fazermos histogramas:
+```{r, eval=FALSE}
+help(hist)
+```
+Este tipo de pesquisa serve somente quando sabemos perfeitamente o nome do comando. Quando não sabemos, não podemos usar este comando.
+
+## Ajuda no R
+
+
+```{r, eval=FALSE}
+# Um exemplo disso é o comando 'Hist', que não existe:
+help(Hist)
+
+# Ou seja, ele nos sugere usarmos a busca fuzzy. Para este tipo de busca
+# devemos proceder da seguinte maneira: help.search("palavra"). Um exemplo:
+help.search("linear")
+```
+
+## Ajuda no R
+
+Ele nos retorna vários comandos relacionados a coisas lineares...
+Aparece na descrição entre parenteses, depois do nome do comando, o nome do pacote que ele está vinculado.
+Escolha como exercício algum comando, carregue o pacote que ele está e peça um help normal.
+```{r, eval=FALSE}
+# Outro modo bem de pedir um help do tipo fuzzy:
+apropos("linear")
+
+# Que é mais economico que o help normal... Pode usar também um pedaço do
+# da função que deseja:
+apropos("lin")
+
+# Mas é lógico que quanto mais próximo do comando, mais breve serão os resultados.
+
+# Também é possível abril o help mais geral e explorar
+help.start()
+
+# Porém, as vezes um google é até melhor
+
+# As vezes você quer só saber os argumentos para alimentar uma função.
+# Use o comando args:
+args(lm) # Comando para fazer regressão linear...
+
+# Mas este comando nem sempre é útil...
+args(hist) # Comando para fazer histogramas
+```
+
+----
+
+Pois bem, agora vamos tentar a função da média.
+```{r}
+mean(86, 14, 9) # hum... resposta errada, então o código deve estar errado!
+```
+
+Devemos ter usado a sintaxe errada.
+A seção "Arguments" do help file nos diz que x precisa ser um objeto "numeric/logical vector."
+Mas o que isso significa? Veremos logo mais.
+
+
+## Instalando e carregando pacotes
+
+Existem milhares de R packages que ampliam as capacidades do R.
+```{r, eval=FALSE}
+library() # Para ver os pacotes disponíveis:
+search() # Para ver os pacotes carregados:
+# Para instalar um pacote novo:
+install.packages("rvest", dependencies=TRUE)
+
+# Para carregar um pacote dê:
+require(MASS) # carrega o pacote MASS por exemplo...
+library(wnominate) # carrega o pacote Wnominete e dependências
+```
+E por aí vai...
+
+## workspace
+
+- Objetos ficam guardados no chamado "workspace."
+- No RStudio, você pode ver o que está na sua área de trabalho no canto direito superior.
+- Use a função ls() para obter uma lista de tudo que está no workspace.
+
+
+## Diretório de trabalho
+
+- A coisa mais comum que queremos fazer no R é trabalhar com dados de algum tipo.
+- Em geral, esses dados estão salvos em algum formato como csv, xls, xlsx (planilhas excel), dta (Stata), sav (SPSS) ou txt (texto).
+- Ler esses arquivos no R, ou seja, adicionar no workspace (exceto para xls e xlsx) é muito simples e veremos na próxima semana.
+- Mas, em primeiro lugar, precisamos dizer ao R onde estão esses arquivos.
+
+## Diretório de trabalho
+
+- Fazemos isso selecionando nosso diretório de trabalho, qual pasta contém os arquivos que interessam.
+- Além disso, sempre que exportar alguma coisa (novos dados, gráficos, etc) ficará salvo no seu diretório de trabalho.
+```{r, eval=FALSE}
+# Para ver o diretório atual
+getwd()
+
+# Para mudar o diretório use a função setwd()
+setwd("~/Dropbox/iesp_uerj/escola_inverno/Intro_R_2015/")
+```
+## Diretório de trabalho
+
+- Note que o endereço fica entre aspas.
+- Se não fizer isso, o R entende que vc está se referindo a um objeto no workspace, não uma pasta no computador.
+- O sinal '~' refere-se à sua pasta pessoal.
+- Diferentes OS tem formas distintas de escrever o endereço. No meu exemplo, rodo em Ubuntu/Linux.
+- No windows, o usual é o caminho inteiro, começando pelo drive (C:, por exemplo).
+
+
+## Criando objetos (ou assignando valores, como preferir)
+
+- O R é uma linguagem de programação orientada para objetos.
+- Isso significa que você irá salvar informação (vetores, funções, dados, etc) como objetos para isso, use " <- " como operador para assignar valores. O nome fica na esquerda e o valor na direita.
+
+```{r}
+x <- 11 # Atribui o valor 10 ao objeto x
+x + 1 # Add 1 to x
+y <- x + 1 # Atribui a y o valor x + 1
+y
+```
+
+----
+- Ok, vamos criar um vetor (ou variável) com os valores 86, 14, 9.
+
+- Usamos a função "combine" ou "concatenate" para colocar os elementos em um vetor.
+- Você pode dar o nome que quiser ao vetor, desde que não começe com um número.
+
+```{r}
+example.vector <- c(86, 14, 9)
+example.vector
+
+## Agora, vamos tentar a função da média novamente
+mean(example.vector)
+(86 + 14 + 9) / 3 ## resposta certa! 
+
+## podemos até mesmo salvar a média como um objeto (uma constante)
+vec.mean <- mean(example.vector)
+vec.mean
+
+```
+---- 
+```{r}
+## Agora, vamos salvar alguns objetos no nosso workspace
+minutes <- 60 * 24 * 365 # objeto numérico com o número de minutos no ano
+minutes
+
+## Objetoss não precisam ser numéricos, eles pode ser strings (caracteres, letras/palavras)
+name <- "Nelson" # use "" para dizer ao R que o objeto é stringe e não numérico ou outro tipo
+name
+
+mean(name) ## não funciona, já que "name" não é um objeto numérico
+
+## Podemos modificar/redesignar o que está no object, mas isso apaga o conteúdo original
+name
+name <- c("Ricardo", "Julio")
+name ## este objeto é chamado um "vetor de caracteres"
+## uma vez que é literalmente um vetor (de tamanho 2) cujos elementos são caracteres
+```
+---- 
+```{r}
+## Vimos que você pode combinar elementos em um vetor concatenando-os
+## você também pode criar um vetor sequência usando a função 'seq'
+two.to.ten <- seq(from = 2, to = 10, by = 1)
+	# 3 argumentos para seq()
+  # dúvida? help file
+?seq # valor inicial, final e o incremento
+two.to.ten
+
+## também dá para criar vetores com o mesmo valor repetido
+five.fours <- rep(4, times=5)
+five.fours
+```
+---- 
+
+```{r}
+## pode combinar as duas funções em um só vetor
+combine.vec <- c(86, 14, 9, seq(2,10,1), rep(4,5))
+combine.vec
+
+##  Objetos podem ser listado, modificados e removidos
+
+ls() # Lista objetos no workspace
+x <- 100 # Overwrite x. Note que não tem aviso de warning!
+x
+# ou
+print(x)
+
+rm(x) # Delete x
+remove(y) # também serve
+ls()
+```
+
+
+## WORKBREAK
+
+1. Crie um vetor contendo todos números interiros de 100 a 200 e guarde num objeto chamado "seq12"
+
+2. Agora, guarde a média desse objeto em um vetor chamado mean12
+
+
+## Um pouco mais sobre objetos 
+
+- criando um data.frame a partir de vetores
+
+Os objetos básicos do R são basicamente 4 (na verdade são bem mais): vetores, matrizes, data frames e listas. 
+A diferença entre estes objetos é basicamente o modo como os dados ficam organizados em seu interior.
+---
+Por enquanto, vamos falar de vetores e data frames.
+
+O objeto mais básico de todos é o vetor. Pense por exemplo na idade dos seus colegas de turma. Podemos organizar esta informação em um vetor.
+```{r}
+# Um exemplo hipotético é:
+idades <- c(18, 21, 25, 19, 34, 45, 60, 28, 31)
+
+# Lembre-se que quando o R não dá nenhum sinal, significa que foi tudo ok!
+# Para ler o vetor:
+idades
+```
+---
+
+```{r}
+
+# Ok, já temos um vetor com idades. Vejamos agora um vetor com opiniões
+# destes mesmos indivíduos sobre a questão do aborto:
+aborto <- c (1, 0, 0, 1, 1, 0, 1, 0, 0)
+
+# Bom, se você não entendeu, 1 significa a favor e 0 contra a legalização do
+# aborto. Vejamos nosso vetor:
+aborto
+
+# Outro modo de descrever esta variável é:
+aborto_fac <- c("Favor", "Contra", "Contra", 
+	"Favor", "Favor", "Contra", "Favor", "Contra", "Contra")
+aborto_fac
+```
+
+---
+
+```{r}
+
+# Note que se você der o comando pela metade aparece um sinal de mais '+'
+# pedindo que você termine o comando...
+
+# Já temos então um pequeno banco de dados com 9 casos e duas variáveis:
+# idade e aborto. Vamos então escrever nosso banco:
+banco1 <- data.frame(idades, aborto, aborto_fac)
+
+# Vejamos nosso banco...
+banco1
+
+# Não está bom... Vamos incluir o sexo: 0=Homem e 1= Mulher...
+sexo <- c(1, 1, 1, 0, 0, 0, 1, 0, 1)
+
+# Vejamos o sexo...
+sexo
+
+# Colocando no banquinho
+banco1 <- data.frame(banco1, sexo)
+banco1
+```
+
+---
+
+```{r}
+
+# Agora só para brincar mais, um pouco da renda dos nossos amigos...
+renda <- c(5, 4, 4, 1, 7, 10, 3, 5, 2)
+
+# Em Salários mínimos antes que alguem se manifeste...
+# Colocando também no banco1...
+banco1 <- data.frame(banco1, renda)
+banco1
+
+renda2 <- c(5, 6,4, 4, 1, 7, 10, 3, 5)
+
+# Em Salários mínimos antes que alguem se manifeste...
+# Colocando também no banco1...
+banco1 <- data.frame(banco1, renda2)
+banco1
+```
+
+---
+
+## TIPOS DE DADOS DO R ##
+
+O R pode armazenar vários tipos de dados como, por exemplo, imagens, músicas, textos, etc. No entando os tipos de dados
+mais comuns com os quais trabalhamos no R são: dados numéricos, caracteres (strings), datas (também chamadas de DateTimeClasses), e lógicos (TRUE ou FALSE).
+
+Principais tipos de dados:
+
+- numeric
+- character (string)
+- Date/POSIXct (time-base)
+- logical
+
+
+---
+A função class() é usada para se extrair (checar) o tipo de dado em que uma determinada variável (ou objeto) está armazenado.
+
+```{r}
+class(idades)
+
+class(banco1)
+```
+---
+# Dados numéricos
+
+Dados numéricos são o tipo de dado mais frequente de se armazenar informações no R. Esse tipo de dado é semelhante os dados do
+tipo "float" ou "double" encontrados em outros softwares estatísticos. Números inteiros, reais (negativos e positivos), e obviamente o zero são armazenados como "numeric" no R.
+---
+Para checarmos se uma variável está armazenada como numérica, usamos a função is.numeric().
+```{r}
+is.numeric(idades)
+w <- c("FALSO", "VERDADEIRO")
+is.numeric(w)
+```
+---
+
+Outro tipo importante de dados são os escalares (intergers) escalares são números inteiros (sem representação decimal).
+Usamos a função is.integer() para checar se um dado é um escalar ou não.
+```{r}
+is.integer(idades)
+
+i <- 5L
+i
+
+is.integer(i)
+
+#Note que i é um escalar; mas, também é um dado numérico!!
+
+is.numeric(i)
+
+# O R armazena escalares como dados númericos quando necessário.
+# Por exemplo, quando dividimos um escalar por outro
+
+class(4L)
+
+class(2.8)
+
+4L * 2.8
+
+class(5L)
+
+class(2L)
+
+5L / 2L
+```
+
+---
+## CARACTERES (strings)
+
+Embora não sejam estritamente matemáticos, os dados caracteres são muito comuns na análise estatística. Caracteres são conhecidos por strings e precisam ser manipulados com cuidado. O R tem duas maneiras de armazenar strings: character e factor. Embora possam parecer a mesma coisa na superfície, sao muito diferentes.
+```{r}
+x <- c("Nelson", "Ricardo")
+x
+
+class(x)
+
+y <- as.factor(c("Nelson", "Ricardo"))
+y
+
+class(y)
+
+# NOTE que x tem as palavras entre aspas e y nao!!
+# Characters são sensíveis ás letras maiúsculas e minúsculas
+
+```
+---
+
+
+```{r}
+
+# Para extrair o tamanho de um character (ou de um dado
+# numerico nos usamos a funcao nchar
+
+nchar(x)
+
+nchar(456)
+
+# Esta funcao nao funciona para factores
+```
+
+---
+
+## Datas
+
+Trabalhar e manipular datas é, em geral, complicado em qualquer tipo de linguagem e sofwares estatísticos. Para
+compicar as coisas ainda mais um pouco o R tem varios tipos de forma de armazenar e lidar com dados de datas (time-base).
+
+Os tipos mais comuns sao:
+
+-POSIXct (armazena a data e um referencia temporal).
+
+-Date (armaneza apenas uma data).
+
+---
+
+Os dois tipos de datas são, na verdade, representados e armazenados como um numero de dias (Date) ou segundos (POISXct) tendo como referencia 1o. de janeiro de 1970.
+
+```{r}
+date1 <- as.Date("2006-08-04")
+date1
+
+class(date1)
+
+as.numeric(date1)
+
+date2 <- as.POSIXct("2006-08-04 9:20")
+date2
+
+class(date2)
+
+as.numeric(date2)
+```
+---
+
+A maneira mais prática e eficiente de manipular dados de datas e por meio dos pacotes lubridate e chron.
+As funções as.numeric ou as.Date não apenas mudam o formato da data armazenada no R como tambem o tipo de dado.
+```{r}
+class(date1)
+
+class(as.numeric(date1))
+```
+---
+
+## Logical
+
+Logical é uma maneira de representar e armazenar dados do tipo FALSE ou TRUE. Numericamente FALSE e como o zero (0) e TRUE como o um (1).
+```{r}
+TRUE * 5
+FALSE * 5
+```
+---
+
+Tal como outros tipos de dados, logical tem uma função própria para serem testados is.logical().
+```{r}
+K <- TRUE
+
+class(K)
+
+is.logical(K)
+```
+---
+
+T e F podem ser usados como atalhos para TRUE e FALSE. Porém é mais seguro usá-los como TRUE ou FALSE para
+evitar confusões, como no exemplo seguinte.
+```{r, eval=FALSE}
+TRUE
+
+T
+
+class(T)
+
+T <- 7
+
+T
+
+class(T)
+```
+---
+
+Logicals são também o resultado de operaçõescomparando dados numéricos.
+```{r}
+# 2 é igual a 3
+
+2 == 3
+
+# 2 é diferente do que 3
+
+2 != 3
+
+# 2 é menor do que 3
+
+2 < 3
+
+# 2 é memor ou igual a 3
+
+2 <= 3
+
+```
+
+---
+
+```{r}
+# 2 é maior do que 3
+
+2 > 3
+
+# 2 é maior ou igual a 3
+
+2 >= 3
+
+# "data" é igual a "stats"
+
+"data" == "stats"
+
+# "data" é menor do que "stats"
+
+"data" < "stats"
+```
+---
+
+# Operadores lógicos
+
+- ==: equal to
+
+- !=: not equal to
+
+- >: greater than
+
+- <: less than
+
+- >=: greater than or equal to
+
+- <=: less than or equal to
+
+- &: and
+
+- |: or
+
+Note que o duplo sinal de igual testa a igualdade.
+Um sinal de igual serve para assignar valor, equivalente a <-.
+---
+
+
+## TIPOS DE OBJETOS DE ARMAZENAMENTO DE DADOS DO R 
+
+Tipos básicos de variáveis utilizadas na análise estatística:
+
+- QUANTITATIVAS: continuas / discretas
+
+- QUALITATIVAS :nominais / ordinais
+
+O R trabalha é uma linguagem orientada a objetos. Isso significa que os elementos são entendidos como objetos, e cada objeto tem suas propriedades correspondentes, e são essas propriedades que permitem a manipulaçao dos objetos.
+
+---
+
+
+Alguns desses objetos são:
+
+- 1. Vetores  (vector)
+  
+- 2. Fatores  (factor)
+
+- 3. Matrizes (matrix = vetor com duas dimensões)
+
+- 4. Arrays   (array  = matriz com mais de duas dimensões)
+  
+- 5. Listas 
+
+- 6. Data frames
+---
+
+Esses objetos armazenam "tipos de dados" OU "modos"que podem ser:
+
+- 1. numeric
+
+- 2. complex
+
+- 3. logical
+
+- 4. character
+
+- 5. raw
+
+---
+
+## VETORES
+
+Tipo mais básico. Armazena um conjunto unidimensional de valores sempre de um mesmo "tipo"(modo) sob um mesmo nome. Quando criamos uma variável no R criamos no mínimo um vetor com um elemento.
+
+Propriedades:
+
+a. modo: determina o "tipo de valor" guardado no vetor. Podem ser:
+
+- character
+
+- numeric
+
+- complex
+
+- logical
+
+b. tamanho: numero de elementos (sempre de um mesmo tipo) que ele contém.
+
+c. nome: nomes (rotulos) dos elementos do vetor (OBS:devem ser atribuídos se quizermos usar).
+
+---
+
+
+Funçao para criar o vetor: c("valor 1", "valor 2", ... ,"valor n"), ou Funçao para criar o vetor VAZIO: vector().
+```{r}
+(vetor.num <- c(11,21,31,41)) # cria um vetor com os numeros 11,21,31 e 41; 
+(vetor2.num <- 3)          # cria um vetor com 3 numero 3 - ou seja, cria-se no minimo um vetor, 
+                          #      mesmo com atribuiçao simples
+vetor3.char <-c("Nome 1", "char 2")
+vetor.mix <- c("seven", 7, "four", 4)
+
+length(vetor.num)         # retorna o tamanhdo do vetor
+vetor.num[2]              # retorna o elemento dois do vetor;
+length(vetor2.num)        # retorna o tamanhdo do vetor 2
+mode(vetor.num)           # retorna o modo do vetor
+mode(vetor3.char)         # retorna o modo do vetor
+mode(vetor.mix)
+```
+
+
+---
+
+## FATORES
+
+Corresponde a dados do tipo categóricos ou nominais . Armazenam um conjunto finito dessas "etiquetas" em uma estrutura parecida com o vetor (unidimensional).
+
+OBS: O R guarda no fator os numeros inteiros, que uncionam como indices ´de cada valor categorico. Daí seu modo ser numerico
+
+Propriedades:
+
+a. Modo:
+
+- numeric
+---
+
+
+b. Níveis (levels): número de valores categóricos diferentes do fator
+
+c. tamanho: numero de elementos do fator
+
+d. nome: podemos atribuir nomes (rotulos) tanto para cada elementos do fator, de modo similar ao que é feito no vetor, ou podemos dar nomes ao níveis (OBS:devem ser atribuídos se quizermos usar) (ver no Script de manipulacao de dados).
+---
+
+Criar fator: factor("vetor") ou factor("matriz").
+```{r}
+x<-matrix(1:3,2,3)
+x
+
+fator <-factor(x)
+fator
+
+#ou
+x <- c(1:3,1:3)
+x
+
+fator <- factor(x)
+fator
+
+#ou
+```
+
+---
+
+```{r}
+fator <- factor(c(1:3,1:3))
+fator
+
+#ou 
+
+fator <- factor(c("H", "M", "H", "H", "H","M","M","H", "H","M","M"))
+fator
+
+# ou podemos especificar a priori os níveis
+fator <- factor(c("H", "H", "H", "H","H", "H"), levels=c("H", "F"))
+fator
+
+#exibindo seus "modos"
+mode(fator)   # o modo é numerico devido a idexacao, mas o dado armazenado é qualitativo
+length(fator) # tamanho do fator
+table(fator)  # mostra o numero de casos do fator em formato de tabela
+```
+
+
+---
+## Matrizes: objeto de duas dimensões (linha x coluna)
+
+São estruturas bidimensionais, mas de resto tem as mesmas propriedades dos vetores, portanto armazena dados sempre de um mesmo tipo.
+
+Propriedades:
+
+a. modo: determina o "tipo de valor" guardado na matriz. Podem ser:
+
+- character
+
+- numeric
+
+- complex
+
+- logical
+
+
+---
+b. tamanho: numero de elementos (sempre de um mesmo tipo) que ele contém.
+
+c. nome: nomes (rotulos) dos elementos da matriz.
+
+Funçao para criar a matriz: matrix(c("valor 1", "valor 2", ... ,"valor n"), nro de linhas, numero de colunas), ou matrix("nome do vetor existente",nro de linhas, nro de colunas).
+
+- Atenção: é linha por coluna (não coluna por linha).
+
+---
+remote controlled (RC) cars, RC Cola,roller coaster, Roman Catholic, and Ray Charles Porque se você misturar as coisas e fizer matrix com dimensões Charles Ray, estará fazendo estatística às cegas.
+```{r}
+## Vamos transformar um vetor em uma matriz 2x3
+## Primeiro, o vetor
+vector1 <- seq(1,6,1)
+
+## agroa a matriz usando a função matrix()
+matrix1 <- matrix(vector1, nrow = 2, ncol = 3)
+matrix1
+
+## Importante lembrar que as matrizes são preeenchidasOne thing to remember about matrices in R is that the data
+## coluna por coluna, de cima para baixo
+```
+
+
+---
+````{r}
+## E se eu quiser que ela pareça assim?
+## 1 2 3
+## 4 5 6
+## 7 8 9
+matrix(1:9, nrow = 3, ncol = 3, byrow=T)
+
+# Atenção: nro de linhas x nro de colunas deve ser igual ao tamanho do vetor de origem
+
+#exibindo as propriedades
+nrow(matrix1) #numero de linhas
+ncol(matrix1) #numero de colunas
+length (matrix1) #tamanho=nro linhas x nro colunas
+mode(matrix1)    #modo
+```
+
+---
+##  ARRAY
+
+São estruturas multidimensionais (mais de duas dimensões), mas de resto tem as mesmas propriedades dos vetores e das matrizes. Assim, a diferença é em termos dos índices para manipulá-los.
+
+Propriedades:
+
+a. modo: determina o "tipo de valor" guardado no array. Podem ser:
+
+- character
+
+- numeric
+
+- complex
+
+- logical
+
+---
+
+b. tamanho: numero de elementos (sempre de um mesmo tipo) que ele contém.
+
+c. nome: nomes (rotulos) dos elementos do array.
+
+Funçao para criar o array: array(c("valor 1", "valor 2", ... ,"valor n"),dim =c("tamanho dimensao 1", "tamanho dimensao 2",...,"tamanho dim n")).
+```{r, eval=FALSE}
+# craindo um array
+a<-array(1:100, dim=c(2,10,5))
+a
+```
+
+---
+## LISTAS
+
+Listas são estruturas ordenadas cujos COMPONENTES podem ser os objetos do R (vetores, fatores, matrizes, as próprias listas, data frames, etc.). Ou seja, os componentes da lista não precisam ser do mesmo tipo (ou do mesmo "modo"). Cada componente é numerado e pode ter um nome (um rótulo) associado.
+
+Propriedades:
+
+a. modo: list.
+
+b. tamanho: numero de COMPONENTES que a lista contem.
+
+c. nomes: nomes dos componentes da lista.
+----
+
+
+- Funçao para criar a lista: list ("componente 1", "componente 2",...,"componente n") ou com rótulo list (nomecompenente 1="componente 1",...,nomecomponente_n = "componente n").
+
+```{r, eval=FALSE}
+#craindo uma lista
+x<- list(12, "Jose", c(10,12), matrix(1:10,2,5))
+x             #mostra a lista
+x[[1]]        #acessa primeiro componente da lista
+x[1]          #idem (lembrando que a lista tem componentes ordenados (indexados))
+x[[3]][2]     #acessa o segundo elemento(12) do terceiro componente da lista (que é um vetor)
+x[[4]][,2]    #acessa a segunda coluna do quarto componente da lista (que é uma matriz)
+
+# criando uma lista com uma sublista
+x<- list(12, "Jose", c(10,12), matrix(1:10,2,5), list("segunda lista elemento um", "idem 2",matrix(1:4,2,2)))
+x
+x[[5]]           # acessa o quinto componente da lista, que é também uma lista
+x[[5]][[2]]      # acessa o segundo componente da sublista, que é o quinto componente da lista
+x[[5]][[3]]      # acessa o terceiro componente da sublista(uma matriz),sendo a sublista o quinto componente da lista
+x[[5]][[3]][,2]  # segunda coluna da matriz da sublista
+
+# criando uma lista com uma sublista e colocando rotulos nas listas
+x<- list(codigo=12, nome="Jose", c(10,12), semestrexresenha=matrix(1:10,2,5), 
+         sublista1=list(subgrupo1="Nerd", subgupo2="Geek"))
+x
+x[[1]]                 #acessa o primeiro componente da lista via indice
+x$codigo               #acessa o primeiro componente da lista via rotulo
+x[[5]][[1]]            #acessa o primeiro componente da sublista("Nerd""), que é o componente 5 da lista
+x$sublista1$subgrupo1  #idem via rotulo
+```
+
+
+---
+## DATA FRAMES
+
+Data frames podem ser entendidos como tabelas de dados. é semelhante a uma matriz, mas cada coluna pode conter tipos diferentes de dados.Pode ser entendido com o uma base de dados no qual as linhas são os casos, e as colunas as propriedades ou variáveis.
+
+Propriedades:
+
+a. modo: list.
+
+b. tamanho: numero de COLUNAS (ou variáveis) e linhas (ou casos).
+
+c. nomes: nomes dos componentes da lista.
+
+## Data Frames
+
+```{r}
+# craindo um data frame
+data1 <- data.frame(codigo=c(1,2,3,4), alunos=c("Aluno 1", "Aluno 2", "Aluno 3", "Aluno 4"),
+                                  outras.inf=c(1, "dois"))
+data1   # a coluna "outras.inf" foi transformada toda em fator, pois um caso contem uma string
+
+is.numeric(data1)
+
+data1[4,2] <- NA    # atribui NA "missing" ao valor da 4a. linha e 2a. coluna
+names(data1)        # mostra os nomes das variáveis
+
+names(data1) <- c("V1", "V2", "V3")  #atribui novos nomes às variáveis
+
+names(data1)[1]     #mostra o nome da 1a. variável
+
+names(data1)[1] <- "codigo"    # renomeia a 1a. variável
+
+summary(data1)    #apresenta medidas de resumo do banco de dados
+```
+
+## Para lembrar
+
+- R é "case sensitive", maiúscula ou minúscula faz diferença.
+- Comentários podem ser colocadores em quase todo lugar. Ctrl+Shitf+C no RStudio.
+- O prompt de comando `>' indica que o R está pronto.
+- Se um comando não está completo, aparece '+' no prompt.
+- Parênteses sempre em pares (primeira coisa para ver se der erro).
+- Nomes devem começar com uma letra e não devem conter espaço.
+- Pode usar '.' para nomear objetos (i.e, "my.data").
+- 1.2 é diferente de 1,2... 1.2 é um número e 1,2 é uma sequência com os números 1 e 2. 
+- Os valores de missing no R aparecem como NA (Not Avialable).
+- Cálculos errados do tipo dividir algo por zero aparecem como NaN (Not a Number).
+
+
+## Referências adicionais
+
+- Cursos do Datacamp <https://www.datacamp.com/swirl-r-tutorial>
+- Simple R <http://cran.r-project.org/doc/contrib/Verzani-SimpleR.pdf>
+- R for cats <http://rforcats.net/> (também tem tutorial javascript)
+- Quick-R <http://www.statmethods.net/>
+- Em português, R para Cientistas Sociais <http://www.uesc.br/editora/livrosdigitais_20140513/r_cientistas.pdf>
+- Estilo e boas práticas na programação <http://google-styleguide.googlecode.com/svn/trunk/Rguide.xml>
+- Para ficar atualizado <http://www.r-bloggers.com/>
+- Q&A mais avançado (não só R) <http://stackoverflow.com/> e <http://stats.stackexchange.com/>
+- Para cursos on-line em geral <https://www.coursera.org/> <https://www.edx.org/>
